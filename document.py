@@ -6,10 +6,12 @@ import uuid
 from typing import List, Dict
 from unstructured.partition.html import partition_html
 from unstructured.chunking.title import chunk_by_title
+import streamlit as st
 
 api_key = "fkAeCp5ZzmMiI4YBtkKUD6BanZVdk1vImBGZ5W0m"
 co = cohere.Client(api_key)
 
+@st.cache_resource
 class Documents:
     """
     A class representing a collection of documents.
@@ -38,7 +40,7 @@ class Documents:
         self.sources = sources
         self.docs = []
         self.docs_embs = []
-        self.retrieve_top_k = 3
+        self.retrieve_top_k = 10
         self.rerank_top_k = 3
         self.load()
         self.embed()
@@ -53,7 +55,6 @@ class Documents:
             for source in self.sources:
                 with open(source["file_path"], "r") as file:
                     svg_content = file.read()
-                    print("embedding svg content", svg_content)
                     self.docs.append(
                         {
                             "title": source["title"],
