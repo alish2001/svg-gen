@@ -8,8 +8,9 @@ from unstructured.partition.html import partition_html
 from unstructured.chunking.title import chunk_by_title
 import streamlit as st
 
-api_key = "fkAeCp5ZzmMiI4YBtkKUD6BanZVdk1vImBGZ5W0m"
+api_key = "INSERT HERE"
 co = cohere.Client(api_key)
+
 
 @st.cache_resource
 class Documents:
@@ -41,7 +42,7 @@ class Documents:
         self.docs = []
         self.docs_embs = []
         self.retrieve_top_k = 10
-        self.rerank_top_k = 3
+        self.rerank_top_k = 1
         self.load()
         self.embed()
         self.index()
@@ -120,6 +121,8 @@ class Documents:
 
         doc_ids = self.idx.knn_query(query_emb, k=self.retrieve_top_k)[0][0]
 
+        print(doc_ids)
+
         docs_to_rerank = []
         for doc_id in doc_ids:
             docs_to_rerank.append(self.docs[doc_id]["text"])
@@ -143,5 +146,7 @@ class Documents:
                     "url": self.docs[doc_id]["url"],
                 }
             )
+
+        print(docs_retrieved)
 
         return docs_retrieved

@@ -13,7 +13,7 @@ from document import Documents
 from directory import load_from_directory
 
 
-api_key = "fkAeCp5ZzmMiI4YBtkKUD6BanZVdk1vImBGZ5W0m"
+api_key = "INSERT HERE"
 co = cohere.Client(api_key)
 
 
@@ -41,13 +41,14 @@ class App:
         if st.button("Submit"):
             st.write("Sending request...")
             # Get the chatbot response
-            response = self.chatbot.generate_response(message)
+            response = self.chatbot.generate_response(
+                "Give me the exact and only svg code for a " + message
+            )
 
-            # Print the chatbot response
-            print("Chatbot:")
-            flag = False
             svg_content = ""
+            flag = False
             for event in response:
+                # print("E:", event)
                 # Text
                 if event.event_type == "text-generation":
                     svg_content += event.text
@@ -66,6 +67,7 @@ class App:
             # svg_content = svg_content.split("<svg")[1]
             # svg_content = "<svg" + svg_content
 
+            print("unfiltered:", svg_content)
             svg_start = svg_content.find("<svg")
             svg_end = svg_content.find("</svg>") + len("</svg>")
 
@@ -107,6 +109,7 @@ class App:
 
 # load svg files from directory to embed
 sources = load_from_directory("/Users/alish/Downloads/svgs")
+print("sources length:", len(sources))
 # sources = [
 #     {"title": "1 SVG", "file_path": "./sample-svgs/1.svg"},
 #     {"title": "2 SVG", "file_path": "./sample-svgs/2.svg"},
@@ -118,6 +121,7 @@ sources = load_from_directory("/Users/alish/Downloads/svgs")
 
 # Create an instance of the Documents class with the given sources
 documents = Documents(sources)
+print("new doc store")
 
 # Create an instance of the Chatbot class with the Documents instance
 chatbot = Chatbot(documents)

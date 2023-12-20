@@ -1,8 +1,8 @@
 import os
 
-
+# MODIFY THIS TO EMBED YOUR OWN SVGs!
+svg_directory = "/Users/alish/Downloads/svgs"
 def load_from_directory(directory):
-    svg_directory = "/Users/alish/Downloads/svgs"
     docs = []
     """
     Loads documents from the specified directory recursively.
@@ -13,7 +13,7 @@ def load_from_directory(directory):
             for file in files:
                 if file.lower().endswith(".svg"):
                     file_path = os.path.join(root, file)
-                    title = os.path.splitext(file)[0]  # Use the file name as the title
+                    title = file  # Use the file name as the title
                     # # print(title)
                     # with open(file_path, "r") as file_content:
                     #     svg_content = file_content.read()
@@ -29,10 +29,12 @@ def load_from_directory(directory):
     except Exception as e:
         print(f"Error loading documents from directory {directory}: {e}")
 
-    return docs
+    return docs[:100]
 
 
-# if __name__ == "__main__":
-#     load_from_directory(svg_directory)
-#     print(len(docs))
-#     # print all the files title names
+if __name__ == "__main__":
+    docs = load_from_directory(svg_directory)
+    print(len(docs))
+    for doc in docs:
+        print(doc)
+    # print all the files title names

@@ -8,7 +8,7 @@ from unstructured.partition.html import partition_html
 from unstructured.chunking.title import chunk_by_title
 from document import Documents
 
-api_key = "fkAeCp5ZzmMiI4YBtkKUD6BanZVdk1vImBGZ5W0m"
+api_key = "INSERT HERE"
 co = cohere.Client(api_key)
 
 
@@ -31,7 +31,7 @@ class Chatbot:
 
     def __init__(self, docs: Documents):
         self.docs = docs
-        self.conversation_id = str(uuid.uuid4())
+        # self.conversation_id = str(uuid.uuid4())
 
     def generate_response(self, message: str):
         """
@@ -63,7 +63,7 @@ class Chatbot:
                 message=message,
                 model="command-nightly",
                 documents=documents,
-                conversation_id=self.conversation_id,
+                # conversation_id=self.conversation_id,
                 stream=True,
             )
             for event in response:
@@ -74,7 +74,7 @@ class Chatbot:
             response = co.chat(
                 message=message,
                 model="command-nightly",
-                conversation_id=self.conversation_id,
+                # conversation_id=self.conversation_id,
                 stream=True,
             )
             for event in response:
